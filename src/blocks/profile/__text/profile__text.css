@@ -1,0 +1,16 @@
+.profile__text {
+    display: grid;
+    grid-template-areas:
+        'name btn-edit'
+        'about about';
+    grid-template-rows: 39px 18px;
+    align-items: baseline;
+    gap: 16px 18px;
+}
+
+@media (max-width: 750px) {
+    .profile__text {
+        grid-template-rows: 26px 14px;
+        gap: 14px 10px;
+    }
+}

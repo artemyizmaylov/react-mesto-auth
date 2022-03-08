@@ -1,0 +1,10 @@
+.popup__confirm-button_disabled {
+    opacity: 20%;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.popup__confirm-button_disabled:hover {
+    opacity: 20%;
+}
