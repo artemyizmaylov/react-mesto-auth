@@ -26,7 +26,7 @@ function EditAvatarPopup(props) {
     e.preventDefault();
 
     setButtonText('Сохранение...');
-    
+
     onUpdateAvatar({
       avatar: link.current.value,
     });
@@ -40,30 +40,30 @@ function EditAvatarPopup(props) {
       onClose={onClose}
     >
       <form
-        className="popup__form"
+        className="form"
         name="avatar"
         method="post"
         noValidate
         onSubmit={handleSubmit}
       >
-        <label className="popup__input-label" htmlFor="avatar-link">
+        <label className="form__input-label" htmlFor="avatar-link">
           <input
             ref={link}
             onChange={() => linkData(link.current)}
             type="url"
             name="avatar"
             id="avatar-link"
-            className="popup__input popup__input_type_link"
+            className="form__input form__input_type_link"
             placeholder="Ссылка на картинку"
             required
           />
-          <span className="popup__input-error avatar-link-error">
+          <span className="form__input-error avatar-link-error">
             {linkValidationMessage}
           </span>
         </label>
         <button
-          className={`button popup__confirm-button ${
-            linkValid ? '' : 'popup__confirm-button_disabled'
+          className={`button submit-button ${
+            linkValid ? '' : 'submit-button_disabled'
           }`}
           disabled={!linkValid}
         >

@@ -67,43 +67,43 @@ function AddPlacePopup(props) {
       onClose={onClose}
     >
       <form
-        className="popup__form"
+        className="form"
         name="place"
         method="post"
         noValidate
         onSubmit={handleSubmit}
       >
-        <label className="popup__input-label" htmlFor="place-name">
+        <label className="form__input-label" htmlFor="place-name">
           <input
             value={name || ''}
             onChange={handleChange}
             type="text"
             name="name"
             id="place-name"
-            className="popup__input popup__input_type_place"
+            className="form__input form__input_type_place"
             placeholder="Название"
             minLength="2"
             maxLength="30"
             required
           />
-          <span className="popup__input-error">{nameValidationMessage}</span>
+          <span className="form__input-error">{nameValidationMessage}</span>
         </label>
-        <label className="popup__input-label" htmlFor="place-link">
+        <label className="form__input-label" htmlFor="place-link">
           <input
             value={link || ''}
             onChange={handleChange}
             type="url"
             name="link"
             id="place-link"
-            className="popup__input popup__input_type_link"
+            className="form__input form__input_type_link"
             placeholder="Ссылка на картинку"
             required
           />
-          <span className="popup__input-error">{linkValidationMessage}</span>
+          <span className="form__input-error">{linkValidationMessage}</span>
         </label>
         <button
-          className={`button popup__confirm-button ${
-            formValid ? '' : 'popup__confirm-button_disabled'
+          className={`button submit-button ${
+            formValid ? '' : 'submit-button_disabled'
           }`}
           type="submit"
           disabled={!formValid}

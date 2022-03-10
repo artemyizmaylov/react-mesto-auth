@@ -73,48 +73,48 @@ function EditProfilePopup(props) {
       onClose={onClose}
     >
       <form
-        className="popup__form"
+        className="form"
         name="profile"
         method="post"
         onSubmit={handleSubmit}
         noValidate
       >
-        <label className="popup__input-label" htmlFor="profile-name">
+        <label className="form__input-label" htmlFor="profile-name">
           <input
             value={name || ''}
             onChange={handleChange}
             type="text"
             name="name"
             id="profile-name"
-            className="popup__input popup__input_type_name"
+            className="form__input form__input_type_name"
             placeholder="Имя"
             minLength="2"
             maxLength="40"
             required
           />
-          <span className="popup__input-error">{nameValidationMessage}</span>
+          <span className="form__input-error">{nameValidationMessage}</span>
         </label>
-        <label className="popup__input-label" htmlFor="profile-about">
+        <label className="form__input-label" htmlFor="profile-about">
           <input
             value={description || ''}
             onChange={handleChange}
             type="text"
             name="about"
             id="profile-about"
-            className="popup__input popup__input_type_about"
+            className="form__input form__input_type_about"
             placeholder="О себе"
             minLength="2"
             maxLength="200"
             required
           />
-          <span className="popup__input-error">
+          <span className="form__input-error">
             {descriptionValidationMessage}
           </span>
         </label>
 
         <button
-          className={`button popup__confirm-button ${
-            formValid ? '' : 'popup__confirm-button_disabled'
+          className={`button submit-button ${
+            formValid ? '' : 'submit-button_disabled'
           }`}
           type="submit"
           disabled={!formValid}
