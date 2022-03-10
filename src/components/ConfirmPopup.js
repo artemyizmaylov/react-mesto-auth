@@ -27,7 +27,7 @@ function ConfirmPopup(props) {
         />
         <h2 className="popup__heading">Вы уверены?</h2>
         <button
-          className="button submit-button"
+          className="button form__submit-button"
           type="button"
           onClick={handleConfirm}
         >

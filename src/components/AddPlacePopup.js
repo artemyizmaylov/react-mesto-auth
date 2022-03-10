@@ -102,8 +102,8 @@ function AddPlacePopup(props) {
           <span className="form__input-error">{linkValidationMessage}</span>
         </label>
         <button
-          className={`button submit-button ${
-            formValid ? '' : 'submit-button_disabled'
+          className={`button form__submit-button ${
+            formValid ? '' : 'form__submit-button_disabled'
           }`}
           type="submit"
           disabled={!formValid}

@@ -62,8 +62,8 @@ function EditAvatarPopup(props) {
           </span>
         </label>
         <button
-          className={`button submit-button ${
-            linkValid ? '' : 'submit-button_disabled'
+          className={`button form__submit-button ${
+            linkValid ? '' : 'form__submit-button_disabled'
           }`}
           disabled={!linkValid}
         >

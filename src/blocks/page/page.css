@@ -1,5 +1,12 @@
 .page {
     min-width: 320px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-areas:
+        'header'
+        'main'
+        'footer';
+    grid-template-rows: 160px 1fr 120px;
     background-color: black;
 
     -moz-osx-font-smoothing: grayscale;

@@ -1,12 +1,14 @@
 .header {
     max-width: 880px;
     height: 74px;
+    width: 90%;
     margin: 0 auto;
-    margin-bottom: 40px;
-    padding-top: 45px;
     border-bottom: 1px #545454 solid;
+    align-self: center;
 
     transition: 0.4s;
+
+    grid-area: header;
 }
 
 @media (max-width: 900px) {

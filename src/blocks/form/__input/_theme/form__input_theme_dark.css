@@ -1,0 +1,41 @@
+.form__input_theme_dark {
+    border-bottom: 2px solid rgb(204, 204, 204);
+}
+
+/* Современные браузеры
+   ----------------------------  */
+.form__input_theme_dark::placeholder {
+    color: #CCCCCC;
+}
+
+/* WebKit, Edge
+   ----------------------------  */
+.form__input_theme_dark::-webkit-input-placeholder {
+    color: #CCCCCC;
+}
+
+/* Edge
+   ----------------------------  */
+.form__input_theme_dark::-ms-input-placeholder {
+    color: #CCCCCC;
+}
+
+/* Firefox 4-18
+   ----------------------------  */
+.form__input_theme_dark:-moz-placeholder {
+    color: #CCCCCC;
+    opacity: 1;
+}
+
+/* Firefox 19+
+   ----------------------------  */
+.form__input_theme_dark::-moz-placeholder {
+    color: #CCCCCC;
+    opacity: 1;
+}
+
+/* IE 10-11
+   ----------------------------  */
+.form__input_theme_dark:-ms-input-placeholder {
+    color: #CCCCCC;
+}

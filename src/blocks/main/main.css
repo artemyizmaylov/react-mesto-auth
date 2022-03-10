@@ -1,7 +1,8 @@
 .main {
-    padding-left: 19px;
-    padding-right: 19px;
     max-width: 880px;
+    width: 90%;
     margin: 0 auto;
     margin-bottom: 66px;
+
+    grid-area: main;
 }
