@@ -6,6 +6,8 @@
     border-bottom: 1px #545454 solid;
     align-self: center;
 
+    display: flex;
+    justify-content: space-between;
     transition: 0.4s;
 
     grid-area: header;
