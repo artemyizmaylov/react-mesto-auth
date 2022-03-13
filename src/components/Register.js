@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { register } from '../utils/Auth';
+import InfoTooltip from './InfoTooltip';
 
-function Register() {
+function Register(props) {
+  const { isPopupOpen, closePopup, openPopup } = props;
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [successRegistration, setSuccessRegistration] = useState(false);
 
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
@@ -33,57 +38,85 @@ function Register() {
     }
   }
 
-  return (
-    <div className="auth-page">
-      <form className="form">
-        <h2 className="auth-page__heading">Регистрация</h2>
-        <label className="form__input-label" htmlFor="email">
-          <input
-            value={email}
-            onChange={handleChange}
-            className="form__input form__input_theme_dark"
-            name="email"
-            id="email"
-            type="email"
-            placeholder="Email"
-            required
-          />
-          <span className="form__input-error">{emailValidationMessage}</span>
-        </label>
-        <label className="form__input-label" htmlFor="password">
-          <input
-            value={password}
-            onChange={handleChange}
-            className="form__input form__input_theme_dark"
-            name="password"
-            id="password"
-            type="password"
-            placeholder="Пароль"
-            required
-          />
-          <span className="form__input-error">{passValidationMessage}</span>
-        </label>
-      </form>
+  function handleSubmit(e) {
+    e.preventDefault();
 
-      <div className="buttons-container">
-        <button
-          className={`button form__submit-button form__submit-button_theme_dark ${
-            formValid ? '' : 'form__submit-button_disabled'
-          }`}
-          type="Submit"
-          onClick={(e) => {
-            e.preventDefault();
-            console.log('Sub');
-          }}
-          disabled={!formValid}
-        >
-          Зарегистрироваться
-        </button>
-        <Link to="/sign-in" className="link">
-          Уже зарегистрированы? Войти
-        </Link>
+    const data = {
+      password,
+      email,
+    };
+
+    register(data)
+      .then((res) => {
+        if (res) {
+          setSuccessRegistration(true);
+          openPopup(true);
+        } else {
+          setSuccessRegistration(false);
+          openPopup(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+  return (
+    <>
+      <div className="auth-page">
+        <form className="form">
+          <h2 className="auth-page__heading">Регистрация</h2>
+          <label className="form__input-label" htmlFor="email">
+            <input
+              value={email}
+              onChange={handleChange}
+              className="form__input form__input_theme_dark"
+              name="email"
+              id="email"
+              type="email"
+              placeholder="Email"
+              minLength={4}
+              required
+            />
+            <span className="form__input-error">{emailValidationMessage}</span>
+          </label>
+          <label className="form__input-label" htmlFor="password">
+            <input
+              value={password}
+              onChange={handleChange}
+              className="form__input form__input_theme_dark"
+              name="password"
+              id="password"
+              type="password"
+              placeholder="Пароль"
+              minLength={4}
+              required
+            />
+            <span className="form__input-error">{passValidationMessage}</span>
+          </label>
+        </form>
+
+        <div className="buttons-container">
+          <button
+            className={`button form__submit-button form__submit-button_theme_dark ${
+              formValid ? '' : 'form__submit-button_disabled'
+            }`}
+            type="Submit"
+            onClick={handleSubmit}
+            disabled={!formValid}
+          >
+            Зарегистрироваться
+          </button>
+          <Link to="/sign-in" className="link">
+            Уже зарегистрированы? Войти
+          </Link>
+        </div>
       </div>
-    </div>
+
+      <InfoTooltip
+        isOpen={isPopupOpen}
+        onClose={closePopup}
+        successRegistration={successRegistration}
+      />
+    </>
   );
 }
 

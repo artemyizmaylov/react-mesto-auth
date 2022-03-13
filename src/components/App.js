@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import { getContent } from '../utils/Auth.js';
 import ProtectedRoute from './ProtectedRoute.js';
 
 import ImagePopup from './ImagePopup.js';
@@ -14,7 +15,6 @@ import Main from './Main.js';
 import Footer from './Footer';
 import Register from './Register';
 import Login from './Login';
-import InfoTooltip from './InfoTooltip.js';
 
 import api from '../utils/Api.js';
 
@@ -31,6 +31,8 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
@@ -128,37 +130,67 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (localStorage.getItem('JWT')) {
+      const token = localStorage.getItem('JWT');
+      
+      getContent(token).then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          navigate('/');
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     document.addEventListener('keydown', handleEscClose);
     return () => document.removeEventListener('keydown', handleEscClose);
   }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <ProtectedRoute loggedIn={true}>
-                <Main
-                  cards={cards}
-                  onEditProfile={handleEditProfileClick}
-                  onAddPlace={handleAddPlaceClick}
-                  onEditAvatar={handleEditAvatarClick}
-                  onCardClick={handleCardClick}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleConfirmDelete}
-                />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/sign-up" element={<Register />} />
-          <Route path="/sign-in" element={<Login />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <Header />
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <ProtectedRoute loggedIn={loggedIn}>
+              <Main
+                cards={cards}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleConfirmDelete}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={
+            <Register
+              isPopupOpen={isRegistrationPopupOpen}
+              openPopup={setIsRegistrationPopupOpen}
+              closePopup={closeAllPopups}
+            />
+          }
+        />
+        <Route
+          path="/sign-in"
+          element={
+            <Login
+              isPopupOpen={isRegistrationPopupOpen}
+              openPopup={setIsRegistrationPopupOpen}
+              closePopup={closeAllPopups}
+              setLoggedIn={setLoggedIn}
+            />
+          }
+        />
+      </Routes>
+      <Footer />
 
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
@@ -185,8 +217,6 @@ function App() {
       />
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-
-      <InfoTooltip isOpen={isRegistrationPopupOpen} onClose={closeAllPopups} />
     </CurrentUserContext.Provider>
   );
 }
