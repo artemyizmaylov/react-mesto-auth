@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { getContent } from '../utils/Auth.js';
+import { getContent, login } from '../utils/Auth.js';
 import ProtectedRoute from './ProtectedRoute.js';
 
 import ImagePopup from './ImagePopup.js';
@@ -9,6 +9,7 @@ import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import ConfirmPopup from './ConfirmPopup.js';
+import InfoTooltip from './InfoTooltip.js';
 
 import Header from './Header';
 import Main from './Main.js';
@@ -17,6 +18,7 @@ import Register from './Register';
 import Login from './Login';
 
 import api from '../utils/Api.js';
+import { register } from '../utils/Auth.js';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -31,7 +33,10 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
+  const [successRegistration, setSuccessRegistration] = useState(false);
+  const [successLogin, setSuccessLogin] = useState(false);
 
+  const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
 
   function handleEditProfileClick() {
@@ -115,6 +120,42 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  function handleRegistration(data) {
+    register(data)
+      .then((res) => {
+        if (res) {
+          setSuccessRegistration(true);
+          setIsRegistrationPopupOpen(true);
+        } else {
+          setSuccessRegistration(false);
+          setIsRegistrationPopupOpen(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleLogin(data) {
+    login(data)
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          navigate('/');
+          getContent(res.token).then((res) => setUserEmail(res.data.email));
+        } else {
+          setSuccessLogin(false);
+          setIsRegistrationPopupOpen(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleUserExit() {
+    localStorage.removeItem('JWT');
+    setLoggedIn(false);
+    setUserEmail('');
+    navigate('/');
+  }
+
   useEffect(() => {
     api
       .getUser()
@@ -132,10 +173,11 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem('JWT')) {
       const token = localStorage.getItem('JWT');
-      
+
       getContent(token).then((res) => {
         if (res) {
           setLoggedIn(true);
+          setUserEmail(res.data.email);
           navigate('/');
         }
       });
@@ -149,7 +191,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header />
+      <Header email={userEmail} loggedIn={loggedIn} exit={handleUserExit} />
       <Routes>
         <Route
           exact
@@ -172,6 +214,7 @@ function App() {
           path="/sign-up"
           element={
             <Register
+              register={handleRegistration}
               isPopupOpen={isRegistrationPopupOpen}
               openPopup={setIsRegistrationPopupOpen}
               closePopup={closeAllPopups}
@@ -182,10 +225,12 @@ function App() {
           path="/sign-in"
           element={
             <Login
+              login={handleLogin}
               isPopupOpen={isRegistrationPopupOpen}
               openPopup={setIsRegistrationPopupOpen}
               closePopup={closeAllPopups}
               setLoggedIn={setLoggedIn}
+              setUserEmail={setUserEmail}
             />
           }
         />
@@ -217,6 +262,12 @@ function App() {
       />
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+
+      <InfoTooltip
+        isOpen={isRegistrationPopupOpen}
+        onClose={closeAllPopups}
+        successRegistration={successRegistration}
+      />
     </CurrentUserContext.Provider>
   );
 }

@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+const BASE_URL = 'https://auth.nomoreparties.co';
 
 export async function register(data) {
   return fetch(`${BASE_URL}/signup`, {

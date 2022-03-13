@@ -3,11 +3,11 @@ import successImage from '../images/success-img.svg';
 import unsuccessImage from '../images/unsuccess-img.svg';
 
 function InfoTooltip(props) {
+  const { isOpen, onClose, success } = props;
   const [message, setMessage] = useState('');
-  const { isOpen, onClose, successRegistration } = props;
 
   useEffect(() => {
-    if (successRegistration) {
+    if (success) {
       setMessage('Вы успешно зарегистрировались!');
     } else {
       setMessage('Что-то пошло не так! Попробуйте ещё раз.');
@@ -24,7 +24,7 @@ function InfoTooltip(props) {
         />
         <img
           className="registration-image"
-          src={successRegistration ? successImage : unsuccessImage}
+          src={success ? successImage : unsuccessImage}
         />
         <h2 className="popup__heading popup__heading_centered">{message}</h2>
       </div>

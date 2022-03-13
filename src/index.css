@@ -1,10 +1,15 @@
 @import url('./vendor/normalize.css');
 @import url('./vendor/fonts.css');
 @import url('./blocks/page/page.css');
+@import url('./blocks/main/main.css');
+@import url('./blocks/places/places.css');
+@import url('./blocks/link/link.css');
+@import url('./blocks/registration-image/registration-image.css');
+@import url('./blocks/button/button.css');
 @import url('./blocks/header/header.css');
 @import url('./blocks/header/__logo/header__logo.css');
-@import url('./blocks/main/main.css');
-@import url('./blocks/button/button.css');
+@import url('./blocks/header/__user-email/header__user-email.css');
+@import url('./blocks/header/__links/header__links.css');
 @import url('./blocks/profile/profile.css');
 @import url('./blocks/profile/__add-button/profile__add-button.css');
 @import url('./blocks/profile/__edit-button/profile__edit-button.css');
@@ -14,7 +19,6 @@
 @import url('./blocks/profile/__text/profile__text.css');
 @import url('./blocks/profile/__name/profile__name.css');
 @import url('./blocks/profile/__about/profile__about.css');
-@import url('./blocks/places/places.css');
 @import url('./blocks/place/place.css');
 @import url('./blocks/place/__trash-button/place__trash-button.css');
 @import url('./blocks/place/__like/place__like.css');
@@ -48,5 +52,4 @@
 @import url('./blocks/form/__input-error/form__input-error.css');
 @import url('./blocks/auth-page/auth-page.css');
 @import url('./blocks/auth-page/__heading/auth-page__heading.css');
-@import url('./blocks/link/link.css');
-@import url('./blocks/registration-image/registration-image.css');
+@import url('./blocks/auth-page/__link/auth-page__link.css');
