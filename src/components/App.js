@@ -125,6 +125,7 @@ function App() {
         if (res) {
           setSuccessRegistration(true);
           setIsRegistrationPopupOpen(true);
+          navigate('/sign-in')
         } else {
           setSuccessRegistration(false);
           setIsRegistrationPopupOpen(true);
@@ -266,7 +267,7 @@ function App() {
       <InfoTooltip
         isOpen={isRegistrationPopupOpen}
         onClose={closeAllPopups}
-        successRegistration={successRegistration}
+        success={successRegistration}
       />
     </CurrentUserContext.Provider>
   );
