@@ -38,12 +38,10 @@ function Register(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const data = {
+    register({
       password,
       email,
-    };
-
-    register(data);
+    });
   }
 
   return (

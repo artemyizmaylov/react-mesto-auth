@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { getContent, login } from '../utils/Auth.js';
-import ProtectedRoute from './ProtectedRoute.js';
+import { getContent, login, register } from '../utils/Auth.js';
 
 import ImagePopup from './ImagePopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
@@ -16,9 +15,9 @@ import Main from './Main.js';
 import Footer from './Footer';
 import Register from './Register';
 import Login from './Login';
+import ProtectedRoute from './ProtectedRoute.js';
 
 import api from '../utils/Api.js';
-import { register } from '../utils/Auth.js';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -28,15 +27,15 @@ function App() {
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardForDelete, setCardForDelete] = useState(null);
-
   const [cards, setCards] = useState([]);
 
   const [currentUser, setCurrentUser] = useState({});
+  const [userEmail, setUserEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+
   const [successRegistration, setSuccessRegistration] = useState(false);
   const [successLogin, setSuccessLogin] = useState(false);
 
-  const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
 
   function handleEditProfileClick() {
@@ -120,7 +119,7 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function handleRegistration(data) {
+  function onRegister(data) {
     register(data)
       .then((res) => {
         if (res) {
@@ -134,13 +133,13 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function handleLogin(data) {
+  function onLogin(data) {
     login(data)
       .then((res) => {
         if (res) {
           setLoggedIn(true);
-          navigate('/');
           getContent(res.token).then((res) => setUserEmail(res.data.email));
+          navigate('/');
         } else {
           setSuccessLogin(false);
           setIsRegistrationPopupOpen(true);
@@ -149,11 +148,12 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function handleUserExit() {
+  function onSignOut() {
     localStorage.removeItem('JWT');
+
     setLoggedIn(false);
     setUserEmail('');
-    navigate('/');
+    navigate('/sign-in');
   }
 
   useEffect(() => {
@@ -191,7 +191,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header email={userEmail} loggedIn={loggedIn} exit={handleUserExit} />
+      <Header email={userEmail} loggedIn={loggedIn} exit={onSignOut} />
       <Routes>
         <Route
           exact
@@ -214,7 +214,7 @@ function App() {
           path="/sign-up"
           element={
             <Register
-              register={handleRegistration}
+              register={onRegister}
               isPopupOpen={isRegistrationPopupOpen}
               openPopup={setIsRegistrationPopupOpen}
               closePopup={closeAllPopups}
@@ -225,7 +225,7 @@ function App() {
           path="/sign-in"
           element={
             <Login
-              login={handleLogin}
+              login={onLogin}
               isPopupOpen={isRegistrationPopupOpen}
               openPopup={setIsRegistrationPopupOpen}
               closePopup={closeAllPopups}

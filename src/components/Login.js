@@ -37,12 +37,10 @@ function Login(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const data = {
+    login({
       password,
       email,
-    };
-
-    login(data);
+    });
   }
 
   return (

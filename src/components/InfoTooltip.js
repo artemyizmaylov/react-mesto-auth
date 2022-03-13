@@ -12,7 +12,7 @@ function InfoTooltip(props) {
     } else {
       setMessage('Что-то пошло не так! Попробуйте ещё раз.');
     }
-  });
+  }, [success]);
 
   return (
     <div className={`popup registration-popup ${isOpen && 'popup_opened'}`}>
