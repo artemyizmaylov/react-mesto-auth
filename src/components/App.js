@@ -56,13 +56,6 @@ function App() {
     setCardForDelete(card);
   }
 
-  function handleEscClose(e) {
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      closeAllPopups();
-    }
-  }
-
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -75,16 +68,24 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some((like) => like._id === currentUser._id);
 
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    });
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => console.log(err));
   }
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id).then(() => {
-      setCards((state) => state.filter((c) => c._id !== card._id));
-      closeAllPopups();
-    });
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
   }
 
   function handleUpdateUser(user) {
@@ -123,7 +124,7 @@ function App() {
         if (res) {
           setSuccessRegistration(true);
           setIsRegistrationPopupOpen(true);
-          navigate('/sign-in')
+          navigate('/sign-in');
         } else {
           setSuccessRegistration(false);
           setIsRegistrationPopupOpen(true);
@@ -155,23 +156,20 @@ function App() {
   }
 
   useEffect(() => {
-    api
-      .getUser()
-      .then((user) => setCurrentUser(user))
-      .catch((err) => console.log(err));
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUser(), api.getCards()])
+        .then(([user, cards]) => {
+          setCurrentUser(user);
+          setCards(cards);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
-    api
-      .getCards()
-      .then((cards) => setCards(cards))
-      .catch((err) => console.log(err));
-  }, []);
+    const token = localStorage.getItem('JWT');
 
-  useEffect(() => {
-    if (localStorage.getItem('JWT')) {
-      const token = localStorage.getItem('JWT');
-
+    if (token) {
       getContent(token).then((res) => {
         if (res) {
           setLoggedIn(true);
@@ -183,6 +181,13 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const handleEscClose = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeAllPopups();
+      }
+    };
+
     document.addEventListener('keydown', handleEscClose);
     return () => document.removeEventListener('keydown', handleEscClose);
   }, []);

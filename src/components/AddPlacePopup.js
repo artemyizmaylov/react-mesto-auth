@@ -25,11 +25,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   }, [isOpen]);
 
   useEffect(() => {
-    if (nameValid && linkValid) {
-      setFormValid(true);
-    } else {
-      setFormValid(false);
-    }
+    setFormValid(nameValid && linkValid);
   }, [nameValid, linkValid]);
 
   function handleChange(e) {
@@ -63,52 +59,38 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       title="Новое место"
       isOpen={isOpen}
       onClose={onClose}
+      onSubmit={handleSubmit}
+      formValid={formValid}
+      buttonText={buttonText}
     >
-      <form
-        className="form"
-        name="place"
-        method="post"
-        noValidate
-        onSubmit={handleSubmit}
-      >
-        <label className="form__input-label" htmlFor="place-name">
-          <input
-            value={name || ''}
-            onChange={handleChange}
-            type="text"
-            name="name"
-            id="place-name"
-            className="form__input form__input_type_place"
-            placeholder="Название"
-            minLength="2"
-            maxLength="30"
-            required
-          />
-          <span className="form__input-error">{nameValidationMessage}</span>
-        </label>
-        <label className="form__input-label" htmlFor="place-link">
-          <input
-            value={link || ''}
-            onChange={handleChange}
-            type="url"
-            name="link"
-            id="place-link"
-            className="form__input form__input_type_link"
-            placeholder="Ссылка на картинку"
-            required
-          />
-          <span className="form__input-error">{linkValidationMessage}</span>
-        </label>
-        <button
-          className={`button form__submit-button ${
-            formValid ? '' : 'form__submit-button_disabled'
-          }`}
-          type="submit"
-          disabled={!formValid}
-        >
-          {buttonText}
-        </button>
-      </form>
+      <label className="form__input-label" htmlFor="place-name">
+        <input
+          value={name || ''}
+          onChange={handleChange}
+          type="text"
+          name="name"
+          id="place-name"
+          className="form__input form__input_type_place"
+          placeholder="Название"
+          minLength="2"
+          maxLength="30"
+          required
+        />
+        <span className="form__input-error">{nameValidationMessage}</span>
+      </label>
+      <label className="form__input-label" htmlFor="place-link">
+        <input
+          value={link || ''}
+          onChange={handleChange}
+          type="url"
+          name="link"
+          id="place-link"
+          className="form__input form__input_type_link"
+          placeholder="Ссылка на картинку"
+          required
+        />
+        <span className="form__input-error">{linkValidationMessage}</span>
+      </label>
     </PopupWithForm>
   );
 }

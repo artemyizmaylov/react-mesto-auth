@@ -30,11 +30,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   }, [currentUser, isOpen]);
 
   useEffect(() => {
-    if (nameValid && descriptionValid) {
-      setFormValid(true);
-    } else {
-      setFormValid(false);
-    }
+    setFormValid(nameValid && descriptionValid);
   }, [nameValid, descriptionValid]);
 
   function handleChange(e) {
@@ -69,14 +65,10 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       title="Редактировать профиль"
       isOpen={isOpen}
       onClose={onClose}
+      onSubmit={handleSubmit}
+      formValid={formValid}
+      buttonText={buttonText}
     >
-      <form
-        className="form"
-        name="profile"
-        method="post"
-        onSubmit={handleSubmit}
-        noValidate
-      >
         <label className="form__input-label" htmlFor="profile-name">
           <input
             value={name || ''}
@@ -109,17 +101,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
             {descriptionValidationMessage}
           </span>
         </label>
-
-        <button
-          className={`button form__submit-button ${
-            formValid ? '' : 'form__submit-button_disabled'
-          }`}
-          type="submit"
-          disabled={!formValid}
-        >
-          {buttonText}
-        </button>
-      </form>
     </PopupWithForm>
   );
 }

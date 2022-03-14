@@ -24,6 +24,7 @@ function InfoTooltip({ isOpen, onClose, success }) {
         <img
           className="registration-image"
           src={success ? successImage : unsuccessImage}
+          alt={success ? 'Успех' : 'Неудача'}
         />
         <h2 className="popup__heading popup__heading_centered">{message}</h2>
       </div>

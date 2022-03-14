@@ -19,8 +19,7 @@ export async function register(data) {
     })
     .then((res) => {
       return res;
-    })
-    .catch((err) => err);
+    });
 }
 
 export async function login(data) {
@@ -45,8 +44,7 @@ export async function login(data) {
         localStorage.setItem('JWT', res.token);
       }
       return res;
-    })
-    .catch((err) => err);
+    });
 }
 
 export async function getContent(token) {
@@ -68,6 +66,5 @@ export async function getContent(token) {
     })
     .then((res) => {
       return res;
-    })
-    .catch((err) => err);
+    });
 }

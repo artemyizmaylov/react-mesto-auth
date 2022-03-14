@@ -36,38 +36,25 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       title="Обновить аватар"
       isOpen={isOpen}
       onClose={onClose}
+      onSubmit={handleSubmit}
+      formValid={linkValid}
+      buttonText={buttonText}
     >
-      <form
-        className="form"
-        name="avatar"
-        method="post"
-        noValidate
-        onSubmit={handleSubmit}
-      >
-        <label className="form__input-label" htmlFor="avatar-link">
-          <input
-            ref={link}
-            onChange={() => linkData(link.current)}
-            type="url"
-            name="avatar"
-            id="avatar-link"
-            className="form__input form__input_type_link"
-            placeholder="Ссылка на картинку"
-            required
-          />
-          <span className="form__input-error avatar-link-error">
-            {linkValidationMessage}
-          </span>
-        </label>
-        <button
-          className={`button form__submit-button ${
-            linkValid ? '' : 'form__submit-button_disabled'
-          }`}
-          disabled={!linkValid}
-        >
-          {buttonText}
-        </button>
-      </form>
+      <label className="form__input-label" htmlFor="avatar-link">
+        <input
+          ref={link}
+          onChange={() => linkData(link.current)}
+          type="url"
+          name="avatar"
+          id="avatar-link"
+          className="form__input form__input_type_link"
+          placeholder="Ссылка на картинку"
+          required
+        />
+        <span className="form__input-error avatar-link-error">
+          {linkValidationMessage}
+        </span>
+      </label>
     </PopupWithForm>
   );
 }
