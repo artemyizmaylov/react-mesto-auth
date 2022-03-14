@@ -1,8 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import React from 'react';
 
-function ProtectedRoute(props) {
-  const { children, loggedIn } = props;
+function ProtectedRoute({ children, loggedIn }) {
   if (loggedIn) {
     return <>{children}</>;
   }

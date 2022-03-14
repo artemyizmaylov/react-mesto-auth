@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function AddPlacePopup(props) {
-  const { isOpen, onClose, onAddPlace } = props;
-
+function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
   const [buttonText, setButtonText] = useState('Создать');

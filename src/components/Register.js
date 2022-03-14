@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-function Register(props) {
-  const { register } = props;
-
+function Register({ register }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 

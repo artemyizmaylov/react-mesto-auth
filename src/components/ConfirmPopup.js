@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
-function ConfirmPopup(props) {
-  const { card, onClose, onCardDelete } = props;
-  const [buttonText, setButtonText] = useState('Да');
+function ConfirmPopup({ card, onClose, onCardDelete }) {
+  const [buttonText, setButtonText] = useState('');
 
   useEffect(() => {
     setButtonText('Да');

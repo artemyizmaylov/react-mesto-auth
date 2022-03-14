@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup(props) {
-  const { isOpen, onClose, onUpdateAvatar } = props;
-
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   const link = useRef(null);
   const [linkValid, setLinkValid] = useState(false);
   const [linkValidationMessage, setLinkValidationMessage] = useState('');
 
-  const [buttonText, setButtonText] = useState('Сохранить');
+  const [buttonText, setButtonText] = useState('');
 
   const linkData = (link) => {
     setLinkValid(link.validity.valid);

@@ -3,9 +3,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 import PopupWithForm from './PopupWithForm';
 
-function EditProfilePopup(props) {
-  const { isOpen, onClose, onUpdateUser } = props;
-
+function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [buttonText, setButtonText] = useState('Сохранить');

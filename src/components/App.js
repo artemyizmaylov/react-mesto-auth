@@ -32,9 +32,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [userEmail, setUserEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
-
   const [successRegistration, setSuccessRegistration] = useState(false);
-  const [successLogin, setSuccessLogin] = useState(false);
 
   const navigate = useNavigate();
 
@@ -142,7 +140,6 @@ function App() {
           getContent(res.token).then((res) => setUserEmail(res.data.email));
           navigate('/');
         } else {
-          setSuccessLogin(false);
           setIsRegistrationPopupOpen(true);
         }
       })

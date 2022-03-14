@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import successImage from '../images/success-img.svg';
 import unsuccessImage from '../images/unsuccess-img.svg';
 
-function InfoTooltip(props) {
-  const { isOpen, onClose, success } = props;
+function InfoTooltip({ isOpen, onClose, success }) {
   const [message, setMessage] = useState('');
 
   useEffect(() => {

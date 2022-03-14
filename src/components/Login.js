@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function Login(props) {
-  const { login } = props;
-
+function Login({ login }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 

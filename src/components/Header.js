@@ -1,8 +1,7 @@
 import logo from '../images/logo.svg';
 import { Link, useLocation } from 'react-router-dom';
 
-function Header(props) {
-  const { email, loggedIn, exit } = props;
+function Header({ email, loggedIn, exit }) {
   const grayColor = {
     color: 'rgba(169, 169, 169, 1)',
   };
