@@ -1,5 +1,5 @@
 import logo from '../images/logo.svg';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Route, Routes } from 'react-router-dom';
 
 function Header({ email, loggedIn, exit }) {
   const grayColor = {
@@ -18,11 +18,14 @@ function Header({ email, loggedIn, exit }) {
           style={loggedIn ? grayColor : {}}
           onClick={exit}
         >
-          {loggedIn
-            ? 'Выйти'
-            : location.pathname === '/sign-in'
-            ? 'Регистрация'
-            : 'Войти'}
+          {loggedIn ? (
+            'Выйти'
+          ) : (
+            <Routes>
+              <Route path="/sign-in" element={'Регистрация'} />
+              <Route path="/sign-up" element={'Войти'} />
+            </Routes>
+          )}
         </Link>
       </div>
     </header>
