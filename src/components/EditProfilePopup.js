@@ -78,7 +78,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     >
       <label className="form__input-label" htmlFor="profile-name">
         <input
-          value={values.name.value}
+          value={values.name.value || ''}
           onChange={handleChange}
           type="text"
           name="name"
@@ -93,7 +93,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       </label>
       <label className="form__input-label" htmlFor="profile-about">
         <input
-          value={values.about.value}
+          value={values.about.value || ''}
           onChange={handleChange}
           type="text"
           name="about"
