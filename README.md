@@ -1,7 +1,9 @@
 # Проект "Mesto" на React
 
 Это обновленная версия проекта Mesto от Яндекс.Практикум, переписанная на React с добавлением React Router.
+
 [Здесь находится проект на JS](https://github.com/artemyizmaylov/mesto)
+
 [Здесь находится проект на React](https://github.com/artemyizmaylov/mesto-react)
 
 
