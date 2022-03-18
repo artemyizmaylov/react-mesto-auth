@@ -12,6 +12,11 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
 
   useEffect(() => {
     link.current.value = '';
+    setValues((values) => ({
+      ...values,
+      message: ''
+    }))
+    
     setButtonText('Сохранить');
   }, [isOpen]);
 
