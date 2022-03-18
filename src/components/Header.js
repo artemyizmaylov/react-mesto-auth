@@ -9,6 +9,7 @@ function Header({ email, exit }) {
         <p className="header__user-email">{email}</p>
         <Routes>
           <Route
+            exact
             path="/"
             element={
               <Link
