@@ -3,22 +3,26 @@ import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   const link = useRef(null);
-  const [linkValid, setLinkValid] = useState(false);
-  const [linkValidationMessage, setLinkValidationMessage] = useState('');
-
   const [buttonText, setButtonText] = useState('');
 
-  const linkData = (link) => {
-    setLinkValid(link.validity.valid);
-    setLinkValidationMessage(link.validationMessage);
-  };
+  const [values, setValues] = useState({
+    message: '',
+    isValid: false
+  })
 
   useEffect(() => {
     link.current.value = '';
-    setLinkValid(false);
-    setLinkValidationMessage('');
     setButtonText('Сохранить');
   }, [isOpen]);
+
+  const linkData = (link) => {
+    setValues((values) => ({
+      ...values,
+      message: link.validationMessage,
+      isValid: link.validity.valid
+    }))
+  };
+
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -37,7 +41,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      formValid={linkValid}
+      formValid={values.isValid}
       buttonText={buttonText}
     >
       <label className="form__input-label" htmlFor="avatar-link">
@@ -52,7 +56,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
           required
         />
         <span className="form__input-error avatar-link-error">
-          {linkValidationMessage}
+          {values.message}
         </span>
       </label>
     </PopupWithForm>

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import AuthForm from './AuthForm';
 
 function Register({ register }) {

@@ -1,44 +1,49 @@
 import { useState, useEffect } from 'react';
 
 function AuthForm({ name, buttonText, onSubmit, children }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [emailValid, setEmailValid] = useState(false);
-  const [passwordValid, setPasswordValid] = useState(false);
-  const [emailValidationMessage, setEmailValidationMessage] = useState('');
-  const [passValidationMessage, setPassValidationMessage] = useState('');
+  const [values, setValues] = useState({
+    email: {
+      value: '',
+      message: '',
+      isValid: false,
+    },
+    password: {
+      value: '',
+      message: '',
+      isValid: false,
+    },
+  });
   const [formValid, setFormValid] = useState(false);
 
+  const handleChange = (event) => {
+    const { name, value, validationMessage, validity } = event.target;
+    setValues((values) => ({
+      ...values,
+      [name]: {
+        value,
+        message: validationMessage,
+        isValid: validity.valid,
+      },
+    }));
+  };
+
   useEffect(() => {
-    if (emailValid && passwordValid) {
+    if (values.email.isValid && values.password.isValid) {
       setFormValid(true);
     } else {
       setFormValid(false);
     }
-  }, [emailValid, passwordValid]);
-
-  function handleChange(e) {
-    switch (e.target.name) {
-      case 'email':
-        setEmail(e.target.value);
-        setEmailValidationMessage(e.target.validationMessage);
-        setEmailValid(e.target.validity.valid);
-        break;
-      case 'password':
-        setPassword(e.target.value);
-        setPassValidationMessage(e.target.validationMessage);
-        setPasswordValid(e.target.validity.valid);
-    }
-  }
+  }, [values]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    onSubmit({
-      password,
-      email,
-    });
+    const data = {
+      password: values.password.value,
+      email: values.email.value,
+    };
+
+    onSubmit(data);
   }
 
   return (
@@ -47,7 +52,7 @@ function AuthForm({ name, buttonText, onSubmit, children }) {
         <h2 className="auth-page__heading">{name}</h2>
         <label className="form__input-label" htmlFor="email">
           <input
-            value={email}
+            value={values.email.value}
             onChange={handleChange}
             className="form__input form__input_theme_dark"
             name="email"
@@ -57,11 +62,11 @@ function AuthForm({ name, buttonText, onSubmit, children }) {
             minLength={4}
             required
           />
-          <span className="form__input-error">{emailValidationMessage}</span>
+          <span className="form__input-error">{values.email.message}</span>
         </label>
         <label className="form__input-label" htmlFor="password">
           <input
-            value={password}
+            value={values.password.value}
             onChange={handleChange}
             className="form__input form__input_theme_dark"
             name="password"
@@ -71,7 +76,7 @@ function AuthForm({ name, buttonText, onSubmit, children }) {
             minLength={4}
             required
           />
-          <span className="form__input-error">{passValidationMessage}</span>
+          <span className="form__input-error">{values.password.message}</span>
         </label>
       </form>
 

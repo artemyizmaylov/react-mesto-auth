@@ -2,55 +2,66 @@ import { useEffect, useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
   const [buttonText, setButtonText] = useState('Создать');
-
-  const [nameValidationMessage, setNameValidationMessage] = useState('');
-  const [linkValidationMessage, setLinkValidationMessage] = useState('');
-
-  const [nameValid, setNameValid] = useState(false);
-  const [linkValid, setLinkValid] = useState(false);
   const [formValid, setFormValid] = useState(false);
 
+  const [values, setValues] = useState({
+    name: {
+      value: '',
+      message: '',
+      isValid: false,
+    },
+    link: {
+      value: '',
+      message: '',
+      isValid: false,
+    },
+  });
+
   useEffect(() => {
-    setName('');
-    setLink('');
-    setNameValid(false);
-    setLinkValid(false);
-    setFormValid(false);
-    setNameValidationMessage('');
-    setLinkValidationMessage('');
+    setValues({
+      name: {
+        value: '',
+        message: '',
+        isValid: false,
+      },
+      link: {
+        value: '',
+        message: '',
+        isValid: false,
+      },
+    });
+    
     setButtonText('Создать');
   }, [isOpen]);
 
   useEffect(() => {
-    setFormValid(nameValid && linkValid);
-  }, [nameValid, linkValid]);
+    setFormValid(values.name.isValid && values.link.isValid);
+  }, [values]);
 
-  function handleChange(e) {
-    switch (e.target.name) {
-      case 'name':
-        setName(e.target.value);
-        setNameValidationMessage(e.target.validationMessage);
-        setNameValid(e.target.validity.valid);
-        break;
-      case 'link':
-        setLink(e.target.value);
-        setLinkValidationMessage(e.target.validationMessage);
-        setLinkValid(e.target.validity.valid);
-    }
-  }
+  const handleChange = (event) => {
+    const { name, value, validationMessage, validity } = event.target;
+    setValues((values) => ({
+      ...values,
+      [name]: {
+        value,
+        message: validationMessage,
+        isValid: validity.valid,
+      },
+    }));
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
 
     setButtonText('Создание...');
 
-    onAddPlace({
-      name,
-      link,
-    });
+    const data = {
+      name: values.name.value,
+      link: values.link.value,
+    };
+
+    onAddPlace(data);
   }
 
   return (
@@ -65,7 +76,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     >
       <label className="form__input-label" htmlFor="place-name">
         <input
-          value={name || ''}
+          value={values.name.value}
           onChange={handleChange}
           type="text"
           name="name"
@@ -76,11 +87,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           maxLength="30"
           required
         />
-        <span className="form__input-error">{nameValidationMessage}</span>
+        <span className="form__input-error">{values.name.message}</span>
       </label>
       <label className="form__input-label" htmlFor="place-link">
         <input
-          value={link || ''}
+          value={values.link.value}
           onChange={handleChange}
           type="url"
           name="link"
@@ -89,7 +100,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           placeholder="Ссылка на картинку"
           required
         />
-        <span className="form__input-error">{linkValidationMessage}</span>
+        <span className="form__input-error">{values.link.message}</span>
       </label>
     </PopupWithForm>
   );
