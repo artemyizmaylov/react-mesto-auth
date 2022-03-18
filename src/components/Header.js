@@ -12,21 +12,37 @@ function Header({ email, loggedIn, exit }) {
       <img className="header__logo" alt="Логотип" src={logo} />
       <div className="header__links">
         <p className="header__user-email">{email}</p>
-        <Link
-          to={location.pathname === '/sign-in' ? '/sign-up' : 'sign-in'}
-          className="link"
-          style={loggedIn ? grayColor : {}}
-          onClick={exit}
-        >
-          {loggedIn ? (
-            'Выйти'
-          ) : (
-            <Routes>
-              <Route path="/sign-in" element={'Регистрация'} />
-              <Route path="/sign-up" element={'Войти'} />
-            </Routes>
-          )}
-        </Link>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Link
+                to="/sign-in"
+                className="link"
+                style={grayColor}
+                onClick={exit}
+              >
+                Выйти
+              </Link>
+            }
+          />
+          <Route
+            path="/sign-in"
+            element={
+              <Link to="/sign-up" className="link">
+                Регистрация
+              </Link>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <Link to="/sign-in" className="link">
+                Войти
+              </Link>
+            }
+          />
+        </Routes>
       </div>
     </header>
   );
