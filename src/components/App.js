@@ -138,7 +138,9 @@ function App() {
       .then((res) => {
         if (res) {
           setLoggedIn(true);
-          getContent(res.token).then((res) => setUserEmail(res.data.email));
+          getContent(res.token)
+            .then((res) => setUserEmail(res.data.email))
+            .catch((err) => console.log(err));
           navigate('/');
         } else {
           setIsRegistrationPopupOpen(true);
@@ -170,13 +172,15 @@ function App() {
     const token = localStorage.getItem('JWT');
 
     if (token) {
-      getContent(token).then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          setUserEmail(res.data.email);
-          navigate('/');
-        }
-      });
+      getContent(token)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setUserEmail(res.data.email);
+            navigate('/');
+          }
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
