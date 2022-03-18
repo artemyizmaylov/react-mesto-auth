@@ -1,12 +1,7 @@
 import logo from '../images/logo.svg';
-import { Link, useLocation, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 
-function Header({ email, loggedIn, exit }) {
-  const grayColor = {
-    color: 'rgba(169, 169, 169, 1)',
-  };
-  const location = useLocation();
-
+function Header({ email, exit }) {
   return (
     <header className="header">
       <img className="header__logo" alt="Логотип" src={logo} />
@@ -18,8 +13,7 @@ function Header({ email, loggedIn, exit }) {
             element={
               <Link
                 to="/sign-in"
-                className="link"
-                style={grayColor}
+                className="link link_color_gray"
                 onClick={exit}
               >
                 Выйти
