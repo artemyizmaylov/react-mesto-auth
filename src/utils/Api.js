@@ -1,28 +1,39 @@
 class Api {
-  constructor({ baseUrl, headers }) {
-    this._baseUrl = baseUrl;
-    this._headers = headers;
+  constructor({baseUrl, headers}) {
+    this._baseUrl = baseUrl;    
+    this._headers = headers
   }
 
   _fetch(dir, method, data) {
     return fetch(`${this._baseUrl}/${dir}`, {
       method: method,
+      credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(data),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(res);
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+
+        return Promise.reject(res);
     });
+  }
+
+  register(data) {
+    return this._fetch('signup', 'POST', data);
+  }
+
+  login(data) {
+    return this._fetch('signin', 'POST', data);
+  }
+
+  logout() {
+    return this._fetch('signout', 'POST');
   }
 
   getUser() {
     return this._fetch('users/me', 'GET');
-  }
-
-  getCards() {
-    return this._fetch('cards', 'GET');
   }
 
   setUser(data) {
@@ -31,6 +42,10 @@ class Api {
 
   setUserAvatar(data) {
     return this._fetch('users/me/avatar', 'PATCH', data);
+  }
+
+  getCards() {
+    return this._fetch('cards', 'GET');
   }
 
   addCard(data) {
@@ -51,9 +66,8 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-34',
+  baseUrl: 'http://localhost:4000',
   headers: {
-    authorization: 'dcd995c7-2c2d-4a8b-8d07-0386baa3ce28',
     'Content-Type': 'application/json',
   },
 });

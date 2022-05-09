@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { getContent, login, register } from '../utils/Auth.js';
 
 import ImagePopup from './ImagePopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
@@ -66,7 +65,7 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((like) => like._id === currentUser._id);
+    const isLiked = card.likes.some((like) => like === currentUser._id);
 
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -119,7 +118,8 @@ function App() {
   }
 
   function onRegister(data) {
-    register(data)
+    api
+      .register(data)
       .then((res) => {
         if (res) {
           setSuccessRegistration(true);
@@ -134,12 +134,15 @@ function App() {
   }
 
   function onLogin(data) {
-    login(data)
+    api
+      .login(data)
       .then((res) => {
         if (res) {
           setLoggedIn(true);
-          getContent(res.token)
-            .then((res) => setUserEmail(res.data.email))
+          localStorage.setItem('loggedIn', 'true');
+          api
+            .getUser()
+            .then((res) => setUserEmail(res.email))
             .catch((err) => console.log(err));
           navigate('/');
         } else {
@@ -150,11 +153,14 @@ function App() {
   }
 
   function onSignOut() {
-    localStorage.removeItem('JWT');
-
-    setLoggedIn(false);
-    setUserEmail('');
-    navigate('/sign-in');
+    api
+      .logout()
+      .then(() => {
+        localStorage.setItem('loggedIn', 'false');
+        setLoggedIn(false);
+        setUserEmail('');
+      })
+      .catch((err) => console.log(err))
   }
 
   useEffect(() => {
@@ -169,16 +175,15 @@ function App() {
   }, [loggedIn]);
 
   useEffect(() => {
-    const token = localStorage.getItem('JWT');
-
-    if (token) {
-      getContent(token)
+    if (localStorage.getItem('loggedIn') === 'true') {
+      api
+        .getUser()
         .then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            setUserEmail(res.data.email);
-            navigate('/');
-          }
+         if (res) {
+           setLoggedIn(true);
+           setUserEmail(res.email);
+           navigate('/');
+         }
         })
         .catch((err) => console.log(err));
     }
