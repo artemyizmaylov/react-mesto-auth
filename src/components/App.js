@@ -163,33 +163,24 @@ function App() {
       .catch((err) => console.log(err))
   }
 
+  // логика первой загрузке приложения
   useEffect(() => {
-    if (loggedIn) {
-      Promise.all([api.getUser(), api.getCards()])
-        .then(([user, cards]) => {
-          setCurrentUser(user);
-          setCards(cards);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [loggedIn]);
-
-  useEffect(() => {
+    // проверка авторизации
     if (localStorage.getItem('loggedIn') === 'true') {
       api
         .getUser()
         .then((res) => {
-         if (res) {
-           setLoggedIn(true);
-           setUserEmail(res.email);
-           navigate('/');
-         }
+          if (res) {
+            setLoggedIn(true);
+            navigate('/');
+            setCurrentUser(res)
+            setUserEmail(res.email);
+          }
         })
         .catch((err) => console.log(err));
     }
-  }, [navigate]);
 
-  useEffect(() => {
+    // добавление закрытия по нажатию на Escape
     const handleEscClose = (e) => {
       if (e.key === 'Escape') {
         e.preventDefault();
@@ -200,6 +191,14 @@ function App() {
     document.addEventListener('keydown', handleEscClose);
     return () => document.removeEventListener('keydown', handleEscClose);
   }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      api.getCards()
+      .then(cards => setCards(cards))
+      .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
