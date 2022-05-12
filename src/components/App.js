@@ -173,7 +173,6 @@ function App() {
           if (res) {
             setLoggedIn(true);
             navigate('/');
-            setCurrentUser(res)
             setUserEmail(res.email);
           }
         })
@@ -194,9 +193,12 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      api.getCards()
-      .then(cards => setCards(cards))
-      .catch((err) => console.log(err));
+      Promise.all([api.getCards(), api.getUser()])
+        .then(([cards, user]) => {
+          setCards(cards)
+          setCurrentUser(user)
+        })
+        .catch((err) => console.log(err));
     }
   }, [loggedIn]);
 
