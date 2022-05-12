@@ -1,7 +1,8 @@
 import { useContext } from 'react';
+import { lazy, Suspense } from 'react/cjs/react.production.min';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-import Card from './Card.js';
+const Card = lazy(() => import('./Card.js'))
 
 function Main({
   cards,
@@ -44,12 +45,14 @@ function Main({
       <ul className="places">
         {cards.map((card) => (
           <li className="place" key={card._id}>
-            <Card
-              card={card}
-              onCardClick={onCardClick}
-              onCardLike={onCardLike}
-              onCardDelete={onCardDelete}
-            />
+            <Suspense fallback={<img src='https://static.tildacdn.com/tild3637-3531-4565-a161-653761663261/74H8gif.gif' alt='Loading' style={{width: '90%', height:  '90%'}}/>}>
+              <Card
+                card={card}
+                onCardClick={onCardClick}
+                onCardLike={onCardLike}
+                onCardDelete={onCardDelete}
+              />
+            </Suspense>
           </li>
         ))}
       </ul>

@@ -1,10 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner === currentUser._id;
   const isLiked = card.likes.some((like) => like === currentUser._id);
+  const imageRef = useRef(null);
 
   const likeButtonClassName = isLiked ? 'place__like-button_active' : '';
 
@@ -22,19 +23,22 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 
   return (
     <>
-      {isOwn ? (
+      {isOwn && (
         <button
           className="button place__trash-button"
           onClick={handleDeleteClick}
           type="button"
-        ></button>
-      ) : (
-        ''
-      )}
+        />)}
       <div className="place__image-container" onClick={handleClick}>
-        <div
-          style={{ backgroundImage: `url(${card.link})` }}
+        <img
+          ref={imageRef}
+          src={card.link}
+          alt={card.name}
           className="place__img"
+          onError={() => {
+            imageRef.current.src = 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png'
+            card.link = 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png'
+          }}
         />
       </div>
       <div className="place__info">
